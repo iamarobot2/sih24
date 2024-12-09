@@ -164,17 +164,6 @@ export default function QRCodeScanner() {
       <ToastContainer />
       <div className="w-full max-w-md shadow-md rounded-lg overflow-hidden">
         <div className="p-4">
-          <h2 className="text-xl font-bold text-center mb-4 text-slate-300">
-            Food Coupon Scanner
-          </h2>
-          <div className="flex flex-row gap-2 items-center p-2">
-            <Image
-              src="/images/ajce.png"
-              alt="ajcelogo"
-              width={50}
-              height={50}
-            />
-          </div>
           <div
             className="relative w-full h-[250px] aspect-video rounded-3xl backdrop-blur-xl"
             style={{

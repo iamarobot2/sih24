@@ -155,7 +155,7 @@ export default function SearchParticipant() {
             )}
           </div>
           {selectedParticipant && (
-            <div className="mt-4 p-3 bg-gray-100 rounded text-black relative">
+            <div className="mt-4 p-3 bg-gray-100 text-black relative rounded-2xl">
               <button
                 className="absolute top-2 right-2 text-red-500 text-2xl"
                 onClick={() => setSelectedParticipant(null)}

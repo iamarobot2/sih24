@@ -1,0 +1,22 @@
+{
+    "name": "SIH24AJCE food coupon",
+    "short_name": "SIH24AJCE",
+    "description": "A web app for scanning food coupons.",
+    "start_url": "/",
+    "display": "fullscreen",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "orientation": "portrait",
+    "icons": [
+      {
+        "src": "/images/ajce.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/images/sih.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
