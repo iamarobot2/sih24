@@ -30,6 +30,9 @@ export default function Demographics() {
       const response = await fetch(
         `/api/demographics?mealType=${mealType}&team=${team.join(",")}&date=${date}&role=${role}`
       );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
       const result = await response.json();
       if (response.ok) {
         setData(result.claimsData);
