@@ -1,6 +1,5 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+// pages/demographics.js
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,51 +8,63 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { Bar } from "react-chartjs-2";
-import SearchTeam from "./SearchTeam";
+import SearchTeam from "@/components/SearchTeam";
 
-export default function Demographics() {
-  const [data, setData] = useState([]);
-  const [mealType, setMealType] = useState("All");
-  const [team, setTeam] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [role, setRole] = useState("All");
-  const [counts, setCounts] = useState({ breakfast: 0, lunch: 0, dinner: 0 });
-  const [totalParticipants, setTotalParticipants] = useState(0);
-  const [unclaimedParticipants, setUnclaimedParticipants] = useState(0);
-  const [unclaimedStudents, setUnclaimedStudents] = useState(0);
-  const [unclaimedMentors, setUnclaimedMentors] = useState(0);
+export default function Demographics({
+  initialData = [],
+  initialMealType = "All",
+  initialTeam = [],
+  initialDate = new Date().toISOString().split("T")[0],
+  initialRole = "All",
+}) {
+  const [data, setData] = React.useState(initialData);
+  const [mealType, setMealType] = React.useState(initialMealType);
+  const [team, setTeam] = React.useState(initialTeam);
+  const [date, setDate] = React.useState(initialDate);
+  const [role, setRole] = React.useState(initialRole);
+  const [counts, setCounts] = React.useState({
+    breakfast: 0,
+    lunch: 0,
+    dinner: 0,
+  });
+  const [totalParticipants, setTotalParticipants] = React.useState(0);
+  const [unclaimedParticipants, setUnclaimedParticipants] = React.useState(0);
+  const [unclaimedStudents, setUnclaimedStudents] = React.useState(0);
+  const [unclaimedMentors, setUnclaimedMentors] = React.useState(0);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        `/api/demographics?mealType=${mealType}&team=${team.join(",")}&date=${date}&role=${role}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await response.json();
-      if (response.ok) {
-        setData(result.claimsData);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `/api/demographics?mealType=${mealType}&team=${team.join(
+            ","
+          )}&date=${date}&role=${role}`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        setData(result.claimsData || []);
         setCounts({
-          breakfast: result.claimsData.filter((item) => item.mealType === "Breakfast").length,
-          lunch: result.claimsData.filter((item) => item.mealType === "Lunch").length,
-          dinner: result.claimsData.filter((item) => item.mealType === "Dinner").length,
+          breakfast: result.claimsData.filter(
+            (item) => item.mealType === "Breakfast"
+          ).length,
+          lunch: result.claimsData.filter((item) => item.mealType === "Lunch")
+            .length,
+          dinner: result.claimsData.filter((item) => item.mealType === "Dinner")
+            .length,
         });
-        setTotalParticipants(result.totalParticipants);
-        setUnclaimedParticipants(result.unclaimedParticipants);
-        setUnclaimedStudents(result.unclaimedStudents);
-        setUnclaimedMentors(result.unclaimedMentors);
-      } else {
-        console.error("Error fetching demographics data");
+        setTotalParticipants(result.totalParticipants || 0);
+        setUnclaimedParticipants(result.unclaimedParticipants || 0);
+        setUnclaimedStudents(result.unclaimedStudents || 0);
+        setUnclaimedMentors(result.unclaimedMentors || 0);
+      } catch (error) {
+        console.error("Error fetching demographics data", error);
       }
-    } catch (error) {
-      console.error("Error fetching demographics data", error);
-    }
-  };
+    };
 
-  useEffect(() => {
     fetchData();
   }, [mealType, team, date, role]);
 
@@ -171,4 +182,41 @@ export default function Demographics() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const {
+    mealType = "All",
+    team = [],
+    date = new Date().toISOString().split("T")[0],
+    role = "All",
+  } = context.query;
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/demographics?mealType=${mealType}&team=${team.join(",")}&date=${date}&role=${role}`
+    );
+    const result = await response.json();
+
+    return {
+      props: {
+        initialData: result.claimsData || [],
+        initialMealType: mealType,
+        initialTeam: team,
+        initialDate: date,
+        initialRole: role,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching demographics data", error);
+    return {
+      props: {
+        initialData: [],
+        initialMealType: mealType,
+        initialTeam: team,
+        initialDate: date,
+        initialRole: role,
+      },
+    };
+  }
 }

@@ -5,8 +5,8 @@ import SearchParticipant from "./../components/SearchParticipant";
 import Image from "next/image";
 import Demographics from "@/components/Demographics";
 
-export default function Home() {
-  const [activeView, setActiveView] = useState("scan");
+export default function Home({ initialView }) {
+  const [activeView, setActiveView] = useState( initialView);
 
   return (
     <>
@@ -56,4 +56,12 @@ export default function Home() {
       </nav>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      initialView: "scan",
+    },
+  };
 }
