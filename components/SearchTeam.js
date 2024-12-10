@@ -11,15 +11,15 @@ export default function SearchTeam({ onSelect }) {
       return;
     }
     try {
-      const response = await fetch(`/api/searchTeams?query=${query}`);
+      const response = await fetch(`http://localhost:3000/api/search/searchTeams?query=${query}`);
       const data = await response.json();
       if (response.ok) {
         setSearchResults(data);
       } else {
-        console.error("Error searching teams");
+        setError(data.message || "Error searching teams");
       }
     } catch (err) {
-      console.error("Error searching teams");
+      setError("Error searching teams");
     }
   };
 

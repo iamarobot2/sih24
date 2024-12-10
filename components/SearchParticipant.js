@@ -9,9 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function SearchParticipant() {
+export default function SearchParticipant({ initialParticipants }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(initialParticipants);
   const [mealType, setMealType] = useState(null);
   const [error, setError] = useState("");
   const [selectedParticipant, setSelectedParticipant] = useState(null);
@@ -28,7 +28,7 @@ export default function SearchParticipant() {
       return;
     }
     try {
-      const response = await fetch(`/api/searchParticipants?query=${query}`);
+      const response = await fetch(`http://localhost:3000/api/search/searchParticipants?query=${query}`)
       const data = await response.json();
       if (response.ok) {
         const uniqueResults = Array.from(
@@ -49,7 +49,7 @@ export default function SearchParticipant() {
       return;
     }
     try {
-      const response = await fetch('/api/claimMeal', {
+      const response = await fetch('http://localhost:3000/api/meals/claimMeal', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export default function SearchParticipant() {
       });
       const data = await response.json();
       if (response.ok) {
-        setError(""); // Clear error on successful claim
+        setError(""); 
         setMealClaimed(true);
         alert(`${mealType} claimed successfully for ${participant.name}`);
       } else {
@@ -74,7 +74,7 @@ export default function SearchParticipant() {
 
   const handleResetMealClaim = async (participant) => {
     try {
-      const response = await fetch('/api/resetMealClaim', {
+      const response = await fetch('http://localhost:3000/api/meals/resetMealClaim', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export default function SearchParticipant() {
       });
       const data = await response.json();
       if (response.ok) {
-        setError(""); // Clear error on successful reset
+        setError("");
         setMealClaimed(false);
         alert(`Meal claim reset successfully for ${participant.name}`);
       } else {
@@ -96,7 +96,7 @@ export default function SearchParticipant() {
 
   const checkMealClaimStatus = async (participant, mealType) => {
     try {
-      const response = await fetch(`/api/checkMealClaim?participantId=${participant.participantId}&mealType=${mealType}`);
+      const response = await fetch(`http://localhost:3000/api/meals/checkMealClaim?participantId=${participant.participantId}&mealType=${mealType}`);
       const data = await response.json();
       if (response.ok) {
         setMealClaimed(data.claimed);
@@ -166,11 +166,15 @@ export default function SearchParticipant() {
               <div className="space-y-2">
                 <div className="p-2 bg-white rounded shadow">
                   <p className="break-words text-sm">
-                    {selectedParticipant.name} - {selectedParticipant.teamName} - {selectedParticipant.mailId}
+                    {selectedParticipant.name} - {selectedParticipant.teamName}{" "}
+                    - {selectedParticipant.mailId}
                   </p>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="secondary" className="rounded-xl mt-2 w-full">
+                      <Button
+                        variant="secondary"
+                        className="rounded-xl mt-2 w-full"
+                      >
                         {mealType ? mealType : "Select Meal Type"}
                       </Button>
                     </DropdownMenuTrigger>

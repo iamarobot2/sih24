@@ -5,8 +5,8 @@ import SearchParticipant from "./../components/SearchParticipant";
 import Image from "next/image";
 import Demographics from "@/components/Demographics";
 
-export default function Home({ initialView }) {
-  const [activeView, setActiveView] = useState( initialView);
+export default function Home({ initialView, initialParticipants }) {
+  const [activeView, setActiveView] = useState(initialView);
 
   return (
     <>
@@ -30,7 +30,7 @@ export default function Home({ initialView }) {
                 Scan food Coupon
               </h2>
             </div>
-            <SearchParticipant />
+            <SearchParticipant initialParticipants={initialParticipants} />
             <QRCodeScanner />
           </>
         )}
@@ -59,9 +59,12 @@ export default function Home({ initialView }) {
 }
 
 export async function getServerSideProps() {
+  const response = await fetch("http://localhost:3000/api/participants");
+  const initialParticipants = await response.json();
   return {
     props: {
       initialView: "scan",
+      initialParticipants,
     },
   };
 }
