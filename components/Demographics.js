@@ -37,7 +37,7 @@ export default function Demographics({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.BASE_URL}/api/demographics?mealType=${mealType}&team=${team.join(
+          `https://sih24api.onrender.com/api/demographics?mealType=${mealType}&team=${team.join(
             ","
           )}&date=${date}&role=${role}`
         );
@@ -193,7 +193,7 @@ export async function getServerSideProps(context) {
 
   try {
     const response = await fetch(
-      `${process.env.BASE_URL}/api/demographics?mealType=${mealType}&team=${team.join(",")}&date=${date}&role=${role}`
+      `https://sih24api.onrender.com/api/demographics?mealType=${mealType}&team=${team.join(",")}&date=${date}&role=${role}`
     );
     const result = await response.json();
 

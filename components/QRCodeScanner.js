@@ -71,7 +71,7 @@ export default function QRCodeScanner() {
 
   const handleClaimMeal = async (participant) => {
     try {
-      const response = await fetch(`${process.env.BASE_URL}/api/meals/claimMeal`, {
+      const response = await fetch(`https://sih24api.onrender.com/api/meals/claimMeal`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export default function QRCodeScanner() {
               if (currentTime - lastScanTimeRef.current > 2000) { // Debounce for 2 seconds
                 lastScanTimeRef.current = currentTime;
                 setDetectionBox(barcode.boundingBox);
-                const response = await fetch(`${process.env.BASE_URL}/api/participants?id=${newScan}`);
+                const response = await fetch(`https://sih24api.onrender.com/api/participants?id=${newScan}`);
                 const data = await response.json();
                 if (response.ok) {
                   if (data.mealClaimed) {

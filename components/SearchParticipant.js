@@ -28,7 +28,7 @@ export default function SearchParticipant({ initialParticipants }) {
       return;
     }
     try {
-      const response = await fetch(`${process.env.BASE_URL}/api/search/searchParticipants?query=${query}`)
+      const response = await fetch(`https://sih24api.onrender.com/api/search/searchParticipants?query=${query}`)
       const data = await response.json();
       if (response.ok) {
         const uniqueResults = Array.from(
@@ -49,7 +49,7 @@ export default function SearchParticipant({ initialParticipants }) {
       return;
     }
     try {
-      const response = await fetch(`${process.env.BASE_URL}/api/meals/claimMeal`, {
+      const response = await fetch(`https://sih24api.onrender.com/api/meals/claimMeal`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export default function SearchParticipant({ initialParticipants }) {
 
   const handleResetMealClaim = async (participant) => {
     try {
-      const response = await fetch(`${process.env.BASE_URL}/api/meals/resetMealClaim`, {
+      const response = await fetch(`https://sih24api.onrender.com/api/meals/resetMealClaim`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export default function SearchParticipant({ initialParticipants }) {
 
   const checkMealClaimStatus = async (participant, mealType) => {
     try {
-      const response = await fetch(`${process.env.BASE_URL}/api/meals/checkMealClaim?participantId=${participant.participantId}&mealType=${mealType}`);
+      const response = await fetch(`https://sih24api.onrender.com/api/meals/checkMealClaim?participantId=${participant.participantId}&mealType=${mealType}`);
       const data = await response.json();
       if (response.ok) {
         setMealClaimed(data.claimed);

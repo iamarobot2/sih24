@@ -12,7 +12,7 @@ export default function SearchTeam({ onSelect }) {
     }
     try {
       const response = await fetch(
-        `${process.env.BASE_URL}/api/search/searchTeams?query=${query}`
+        `https://sih24api.onrender.com/api/search/searchTeams?query=${query}`
       );
       const data = await response.json();
       if (response.ok) {

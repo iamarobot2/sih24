@@ -59,7 +59,7 @@ export default function Home({ initialView, initialParticipants }) {
 }
 
 export async function getServerSideProps() {
-  const response = await fetch(`${process.env.BASE_URL}/api/participants`);
+  const response = await fetch(`https://sih24api.onrender.com/api/participants`);
   const initialParticipants = await response.json();
   return {
     props: {
