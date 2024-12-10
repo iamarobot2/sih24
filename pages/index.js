@@ -59,7 +59,7 @@ export default function Home({ initialView, initialParticipants }) {
 }
 
 export async function getServerSideProps() {
-  const response = await fetch("http://localhost:3000/api/participants");
+  const response = await fetch(`${process.env.BASE_URL}/api/participants`);
   const initialParticipants = await response.json();
   return {
     props: {

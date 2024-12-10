@@ -1,4 +1,3 @@
-// pages/demographics.js
 import React from "react";
 import {
   DropdownMenu,
@@ -38,7 +37,7 @@ export default function Demographics({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `/api/demographics?mealType=${mealType}&team=${team.join(
+          `${process.env.BASE_URL}/api/demographics?mealType=${mealType}&team=${team.join(
             ","
           )}&date=${date}&role=${role}`
         );
@@ -194,7 +193,7 @@ export async function getServerSideProps(context) {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/demographics?mealType=${mealType}&team=${team.join(",")}&date=${date}&role=${role}`
+      `${process.env.BASE_URL}/api/demographics?mealType=${mealType}&team=${team.join(",")}&date=${date}&role=${role}`
     );
     const result = await response.json();
 
